@@ -3,12 +3,12 @@ import "./App.css";
 import { generateContent, purifyCode } from "./helper";
 
 const App = () => {
-  // console.log(import.meta.env.VITE_GOOGLE_API_KEY);
-
   const [Info, setInfo] = useState({
     userQuery: "",
     error: "",
     generatedComponent: "",
+    rawCode: "",        // ← new
+    showCode: false,    // ← new
     loading: false,
   });
 
@@ -31,28 +31,33 @@ const App = () => {
       loading: true,
       error: "",
       generatedComponent: null,
+      rawCode: "",      // ← reset on new generation
+      showCode: false,  // ← collapse panel on new generation
     }));
 
     try {
       const response = await generateContent(Info?.userQuery);
       let componentCode = response?.candidates?.[0]?.content?.parts?.[0]?.text;
       componentCode = purifyCode(componentCode);
+
+      const savedCode = componentCode; // ← save before passing to new Function
+
       let Component = new Function(
         "React",
         `
-        try{
+        try {
           ${componentCode}
           return GeneratedComponent
-        }catch(error){
+        } catch(error) {
           throw(error)
         }
-
-        `,
+        `
       )(React);
 
       setInfo((prev) => ({
         ...prev,
         generatedComponent: <Component />,
+        rawCode: savedCode, // ← store the raw code string
         error: "",
         userQuery: "",
       }));
@@ -67,16 +72,21 @@ const App = () => {
     }
   }, [Info?.userQuery, Info?.loading]);
 
+  const toggleCode = useCallback(() => {
+    setInfo((prev) => ({ ...prev, showCode: !prev.showCode }));
+  }, []);
+
   return (
     <div className="codeGeneratorParentContainer">
       <div className="inputSectionContainer">
         <textarea
           className="textAreaInput"
           placeholder="Describe your React Component..."
+          value={Info.userQuery}
           onChange={handleonChange}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault(); // prevents new line
+              e.preventDefault();
               handleGenerate();
             }
           }}
@@ -85,10 +95,32 @@ const App = () => {
           Generate
         </button>
       </div>
+
       <div className="previewSectionContainer">
         {Info?.error && <div className="error-message">{Info?.error}</div>}
+
         {Info?.generatedComponent ? (
-          Info.generatedComponent
+          <div className="componentWrapper">
+            {/* ── toolbar with toggle button ── */}
+            <div className="componentToolbar">
+              <button className="viewCodeBtn" onClick={toggleCode}>
+                {Info.showCode ? "Hide Code" : "View Code"}
+              </button>
+            </div>
+
+            {/* ── collapsible code panel ── */}
+            {Info.showCode && (
+              <pre className="codePanel">
+                <code>{Info.rawCode}</code>
+              </pre>
+            )}
+
+            {/* ── the live component ── */}
+            <div className="componentContent">
+            {Info.generatedComponent}
+            </div>
+
+          </div>
         ) : (
           <div className="emptyMessageContainer">
             {Info?.loading ? (
@@ -97,9 +129,7 @@ const App = () => {
                 <span>Generating Component</span>
               </div>
             ) : (
-              <p>
-                Describe your component in the input field and click Generate.
-              </p>
+              <p>Describe your component in the input field and click Generate.</p>
             )}
           </div>
         )}
