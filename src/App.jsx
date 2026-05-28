@@ -7,8 +7,8 @@ const App = () => {
     userQuery: "",
     error: "",
     generatedComponent: "",
-    rawCode: "",        // ← new
-    showCode: false,    // ← new
+    rawCode: "",
+    showCode: false,
     loading: false,
   });
 
@@ -31,8 +31,8 @@ const App = () => {
       loading: true,
       error: "",
       generatedComponent: null,
-      rawCode: "",      // ← reset on new generation
-      showCode: false,  // ← collapse panel on new generation
+      rawCode: "",
+      showCode: false,
     }));
 
     try {
@@ -40,7 +40,7 @@ const App = () => {
       let componentCode = response?.candidates?.[0]?.content?.parts?.[0]?.text;
       componentCode = purifyCode(componentCode);
 
-      const savedCode = componentCode; // ← save before passing to new Function
+      const savedCode = componentCode;
 
       let Component = new Function(
         "React",
@@ -101,21 +101,18 @@ const App = () => {
 
         {Info?.generatedComponent ? (
           <div className="componentWrapper">
-            {/* ── toolbar with toggle button ── */}
             <div className="componentToolbar">
               <button className="viewCodeBtn" onClick={toggleCode}>
                 {Info.showCode ? "Hide Code" : "View Code"}
               </button>
             </div>
 
-            {/* ── collapsible code panel ── */}
             {Info.showCode && (
               <pre className="codePanel">
                 <code>{Info.rawCode}</code>
               </pre>
             )}
 
-            {/* ── the live component ── */}
             <div className="componentContent">
             {Info.generatedComponent}
             </div>
