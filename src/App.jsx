@@ -26,7 +26,12 @@ const App = () => {
       }));
     }
 
-    setInfo((prev) => ({ ...prev, loading: true, error: "", generatedComponent: null}));
+    setInfo((prev) => ({
+      ...prev,
+      loading: true,
+      error: "",
+      generatedComponent: null,
+    }));
 
     try {
       const response = await generateContent(Info?.userQuery);
@@ -49,7 +54,7 @@ const App = () => {
         ...prev,
         generatedComponent: <Component />,
         error: "",
-        userQuery:"",
+        userQuery: "",
       }));
     } catch (error) {
       console.log("Error: ", error);
@@ -69,6 +74,12 @@ const App = () => {
           className="textAreaInput"
           placeholder="Describe your React Component..."
           onChange={handleonChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault(); // prevents new line
+              handleGenerate();
+            }
+          }}
         />
         <button className="generateButtonContainer" onClick={handleGenerate}>
           Generate

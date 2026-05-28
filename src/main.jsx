@@ -8,6 +8,3 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
-
-
-//AIzaSyCRpFSzz959YI5R_E2ou652XMcPfjVQHTI
