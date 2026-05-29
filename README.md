@@ -1,16 +1,170 @@
-# React + Vite
+# AI React Component Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered React application that dynamically generates React UI components from natural language prompts using the Google Gemini API. The application processes user input, generates JSX code through Gemini, sanitizes the response, and renders the generated component in real time.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* **Application:** https://component-rendering-pick4xk8j-prem-sagars-projects-9fba3752.vercel.app/
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Overview
 
-## Expanding the ESLint configuration
+This project leverages Large Language Models (LLMs) to automate frontend component generation. Users provide a textual description of a UI, and the system converts that description into executable React component code.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The generated code is processed, validated, and rendered dynamically within the application, enabling rapid UI prototyping and experimentation.
+
+---
+
+## Architecture
+
+```text
+
+User Prompt
+     │
+     ▼
+React Frontend
+     │
+     ▼
+Google Gemini API
+     │
+     ▼
+Generated JSX Response
+     │
+     ▼
+Code Sanitization Layer
+     │
+     ▼
+Dynamic Component Rendering
+```
+
+---
+
+## Features
+
+* Natural language to React component generation
+* Google Gemini API integration
+* Dynamic JSX rendering
+* Code sanitization and processing
+* Error handling for invalid AI responses
+* Loading state management
+* Responsive user interface
+* Modern React Hooks implementation
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React 19
+* Vite
+* JavaScript (ES6+)
+* CSS3
+
+### AI Integration
+
+* Google Gemini API
+* Prompt Engineering
+
+### Development Tools
+
+* Git
+* GitHub
+* npm
+
+---
+
+## Project Structure
+
+```bash
+src/
+│
+├── components/
+│   ├── GeneratedComponent/
+│   ├── PromptInput/
+│   └── Preview/
+│
+├── helper/
+│   ├── generateContent.js
+│   └── purifyCode.js
+│
+├── assets/
+│
+├── App.jsx
+├── main.jsx
+└── App.css
+```
+
+---
+
+## Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/your-username/your-repository.git
+cd your-repository
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Configure Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_GOOGLE_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+### Start Development Server
+
+```bash
+npm run dev
+```
+
+
+## Environment Variables
+
+| Variable            | Description           |
+| ------------------- | --------------------- |
+| VITE_GOOGLE_API_KEY | Google Gemini API Key |
+
+---
+
+## API Workflow
+
+1. User submits a UI description.
+2. Application constructs a prompt.
+3. Prompt is sent to Gemini API.
+4. Gemini returns React JSX code.
+5. Generated code is sanitized.
+6. Component is rendered dynamically.
+7. Errors are captured and displayed to the user.
+
+---
+
+## Example Prompt
+
+```text
+Create a modern dashboard with:
+- Sidebar navigation
+- Statistics cards
+- User activity table
+- Responsive design
+```
+
+---
+
+## Challenges Solved
+
+* Dynamic rendering of AI-generated React code
+* Parsing and sanitizing Gemini responses
+* Preventing invalid JSX execution
+* Managing asynchronous API requests
+* Handling API failures and malformed outputs
+
